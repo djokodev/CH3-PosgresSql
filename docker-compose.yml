@@ -1,0 +1,19 @@
+services:
+  web:
+    build: .
+    command: python /code/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code #objectifs, comme le partage de fichiers entre le conteneur et l'hôte.
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+  db:
+    image: postgres:16
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/ #pour le stockage persistant. Cela signifie que vous pouvez modifier le code, actualiser votre application dans le conteneur, et voir les résultats immédiatement sans avoir besoin de reconstruire ou de redémarrer le conteneur.
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+
+volumes:
+  postgres_data:
